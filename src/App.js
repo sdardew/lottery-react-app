@@ -1,4 +1,3 @@
-import logo from './logo.svg';
 import React, { Component } from 'react';
 import './App.css';
 
@@ -8,7 +7,7 @@ import Web3 from 'web3';
 class App extends Component {
 
   async componentDidMount() {
-
+    await this.initWeb3()
   }
 
   initWeb3 = async () => {
@@ -17,7 +16,9 @@ class App extends Component {
       this.web3 = new Web3(window.ethereum);
       try {
           // Request account access if needed
-          await window.ethereum.enable();
+          // deprecated
+          // await window.ethereum.enable();
+          await window.ethereum.request({ method: 'eth_requestAccounts' });
           // Acccounts now exposed
           // this.web3.eth.sendTransaction({/* ... */});
       } catch (error) {
