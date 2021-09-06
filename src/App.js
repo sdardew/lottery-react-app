@@ -8,6 +8,12 @@ class App extends Component {
 
   async componentDidMount() {
     await this.initWeb3()
+    console.log(this.web3);
+    let accounts = await this.web3.eth.getAccounts();
+    console.log(accounts);
+
+    let balance = await this.web3.eth.getBalance(accounts[0]);
+    console.log(balance);
   }
 
   initWeb3 = async () => {
