@@ -2,10 +2,10 @@ import React, { Component } from 'react';
 import './App.css';
 
 import Web3 from 'web3';
+// import { groupPatternsByBaseDirectory } from 'fast-glob/out/managers/tasks';
 
-let lotteryAddress = '0x3F0590De048fdB454aFDc1AC9c87ea1CcD09640c'; // truffle migrate --reset 입력 후 출력되는 contracts의 주소
-// Lottery.json의 abi 부분
-let lotteryABI = [ { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "index", "type": "uint256" }, { "indexed": false, "internalType": "address", "name": "bettor", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }, { "indexed": false, "internalType": "bytes1", "name": "challenges", "type": "bytes1" }, { "indexed": false, "internalType": "uint256", "name": "answerBlockNumber", "type": "uint256" } ], "name": "BET", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "index", "type": "uint256" }, { "indexed": false, "internalType": "address", "name": "bettor", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }, { "indexed": false, "internalType": "bytes1", "name": "challenges", "type": "bytes1" }, { "indexed": false, "internalType": "bytes1", "name": "answer", "type": "bytes1" }, { "indexed": false, "internalType": "uint256", "name": "answerBlockNumber", "type": "uint256" } ], "name": "DRAW", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "index", "type": "uint256" }, { "indexed": false, "internalType": "address", "name": "bettor", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }, { "indexed": false, "internalType": "bytes1", "name": "challenges", "type": "bytes1" }, { "indexed": false, "internalType": "bytes1", "name": "answer", "type": "bytes1" }, { "indexed": false, "internalType": "uint256", "name": "answerBlockNumber", "type": "uint256" } ], "name": "FAIL", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "index", "type": "uint256" }, { "indexed": false, "internalType": "address", "name": "bettor", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }, { "indexed": false, "internalType": "bytes1", "name": "challenges", "type": "bytes1" }, { "indexed": false, "internalType": "uint256", "name": "answerBlockNumber", "type": "uint256" } ], "name": "REFUND", "type": "event" }, { "anonymous": false, "inputs": [ { "indexed": false, "internalType": "uint256", "name": "index", "type": "uint256" }, { "indexed": false, "internalType": "address", "name": "bettor", "type": "address" }, { "indexed": false, "internalType": "uint256", "name": "amount", "type": "uint256" }, { "indexed": false, "internalType": "bytes1", "name": "challenges", "type": "bytes1" }, { "indexed": false, "internalType": "bytes1", "name": "answer", "type": "bytes1" }, { "indexed": false, "internalType": "uint256", "name": "answerBlockNumber", "type": "uint256" } ], "name": "WIN", "type": "event" }, { "constant": true, "inputs": [], "name": "answerForTest", "outputs": [ { "internalType": "bytes32", "name": "", "type": "bytes32" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [ { "internalType": "address payable", "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": true, "inputs": [], "name": "getPot", "outputs": [ { "internalType": "uint256", "name": "pot", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function" }, { "constant": false, "inputs": [ { "internalType": "bytes1", "name": "challenges", "type": "bytes1" } ], "name": "betAndDistribute", "outputs": [ { "internalType": "bool", "name": "result", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": false, "inputs": [ { "internalType": "bytes1", "name": "challenges", "type": "bytes1" } ], "name": "bet", "outputs": [ { "internalType": "bool", "name": "result", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function" }, { "constant": false, "inputs": [], "name": "distribute", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": false, "inputs": [ { "internalType": "bytes32", "name": "answer", "type": "bytes32" } ], "name": "setAnswerForTest", "outputs": [ { "internalType": "bool", "name": "result", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function" }, { "constant": true, "inputs": [ { "internalType": "bytes1", "name": "challenges", "type": "bytes1" }, { "internalType": "bytes32", "name": "answer", "type": "bytes32" } ], "name": "isMatch", "outputs": [ { "internalType": "enum Lottery.BettingResult", "name": "", "type": "uint8" } ], "payable": false, "stateMutability": "pure", "type": "function" }, { "constant": true, "inputs": [ { "internalType": "uint256", "name": "index", "type": "uint256" } ], "name": "getBetInfo", "outputs": [ { "internalType": "uint256", "name": "answerBlockNumber", "type": "uint256" }, { "internalType": "address", "name": "bettor", "type": "address" }, { "internalType": "bytes1", "name": "challenges", "type": "bytes1" } ], "payable": false, "stateMutability": "view", "type": "function" } ];
+let lotteryAddress = '0x3F0590De048fdB454aFDc1AC9c87ea1CcD09640c'; // migrate을 때 lottery의 address
+let lotteryABI = [ { "constant": true, "inputs": [], "name": "answerForTest", "outputs": [ { "name": "", "type": "bytes32" } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0x84f7e4f0" }, { "constant": true, "inputs": [], "name": "owner", "outputs": [ { "name": "", "type": "address" } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0x8da5cb5b" }, { "inputs": [], "payable": false, "stateMutability": "nonpayable", "type": "constructor", "signature": "constructor" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "index", "type": "uint256" }, { "indexed": false, "name": "bettor", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }, { "indexed": false, "name": "challenges", "type": "bytes1" }, { "indexed": false, "name": "answerBlockNumber", "type": "uint256" } ], "name": "BET", "type": "event", "signature": "0x100791de9f40bf2d56ffa6dc5597d2fd0b2703ea70bc7548cd74c04f5d215ab7" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "index", "type": "uint256" }, { "indexed": false, "name": "bettor", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }, { "indexed": false, "name": "challenges", "type": "bytes1" }, { "indexed": false, "name": "answer", "type": "bytes1" }, { "indexed": false, "name": "answerBlockNumber", "type": "uint256" } ], "name": "WIN", "type": "event", "signature": "0x8219079e2d6c1192fb0ff7f78e6faaf5528ad6687e69749205d87bd4b156912b" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "index", "type": "uint256" }, { "indexed": false, "name": "bettor", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }, { "indexed": false, "name": "challenges", "type": "bytes1" }, { "indexed": false, "name": "answer", "type": "bytes1" }, { "indexed": false, "name": "answerBlockNumber", "type": "uint256" } ], "name": "FAIL", "type": "event", "signature": "0x3b19d607433249d2ebc766ae82ca3848e9c064f1febb5147bc6e5b21d0adebc5" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "index", "type": "uint256" }, { "indexed": false, "name": "bettor", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }, { "indexed": false, "name": "challenges", "type": "bytes1" }, { "indexed": false, "name": "answer", "type": "bytes1" }, { "indexed": false, "name": "answerBlockNumber", "type": "uint256" } ], "name": "DRAW", "type": "event", "signature": "0x72ec2e949e4fad9380f9d5db3e2ed0e71cf22c51d8d66424508bdc761a3f4b0e" }, { "anonymous": false, "inputs": [ { "indexed": false, "name": "index", "type": "uint256" }, { "indexed": false, "name": "bettor", "type": "address" }, { "indexed": false, "name": "amount", "type": "uint256" }, { "indexed": false, "name": "challenges", "type": "bytes1" }, { "indexed": false, "name": "answerBlockNumber", "type": "uint256" } ], "name": "REFUND", "type": "event", "signature": "0x59c0185881271a0f53d43e6ab9310091408f9e0ff9ae2512613de800f26b8de4" }, { "constant": true, "inputs": [], "name": "getPot", "outputs": [ { "name": "pot", "type": "uint256" } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0x403c9fa8" }, { "constant": false, "inputs": [ { "name": "challenges", "type": "bytes1" } ], "name": "betAndDistribute", "outputs": [ { "name": "result", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function", "signature": "0xe16ea857" }, { "constant": false, "inputs": [ { "name": "challenges", "type": "bytes1" } ], "name": "bet", "outputs": [ { "name": "result", "type": "bool" } ], "payable": true, "stateMutability": "payable", "type": "function", "signature": "0xf4b46f5b" }, { "constant": false, "inputs": [], "name": "distribute", "outputs": [], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0xe4fc6b6d" }, { "constant": false, "inputs": [ { "name": "answer", "type": "bytes32" } ], "name": "setAnswerForTest", "outputs": [ { "name": "result", "type": "bool" } ], "payable": false, "stateMutability": "nonpayable", "type": "function", "signature": "0x7009fa36" }, { "constant": true, "inputs": [ { "name": "challenges", "type": "bytes1" }, { "name": "answer", "type": "bytes32" } ], "name": "isMatch", "outputs": [ { "name": "", "type": "uint8" } ], "payable": false, "stateMutability": "pure", "type": "function", "signature": "0x99a167d7" }, { "constant": true, "inputs": [ { "name": "index", "type": "uint256" } ], "name": "getBetInfo", "outputs": [ { "name": "answerBlockNumber", "type": "uint256" }, { "name": "bettor", "type": "address" }, { "name": "challenges", "type": "bytes1" } ], "payable": false, "stateMutability": "view", "type": "function", "signature": "0x79141f80" } ]
 
 class App extends Component {
 
@@ -13,7 +13,7 @@ class App extends Component {
     super(props);
 
     this.state = {
-      betRecords: [], // betting result
+      betRecords: [],
       winRecords: [],
       failRecords: [],
       pot: '0',
@@ -28,10 +28,19 @@ class App extends Component {
       }]
     }
   }
-
   async componentDidMount() {
-    await this.initWeb3()
-    await this.getBetEvents()
+    await this.initWeb3();
+    // await this.pollData();
+    setInterval(this.pollData, 1000);
+  }
+
+  pollData = async () => {
+    await this.getPot();
+    await this.getBetEvents();
+    await this.getWinEvents();
+    await this.getFailEvents();
+    this.makeFinalRecords();
+
   }
 
   initWeb3 = async () => {
@@ -40,9 +49,7 @@ class App extends Component {
       this.web3 = new Web3(window.ethereum);
       try {
           // Request account access if needed
-          // deprecated
           await window.ethereum.enable();
-          // await window.ethereum.request({ method: 'eth_requestAccounts' });
           // Acccounts now exposed
           // this.web3.eth.sendTransaction({/* ... */});
       } catch (error) {
@@ -66,47 +73,111 @@ class App extends Component {
     this.account = accounts[0];
 
     this.lotteryContract = new this.web3.eth.Contract(lotteryABI, lotteryAddress);
-
-    let pot = this.lotteryContract.methods.getPot().call();
-    console.log(pot);
     
-    let owner = this.lotteryContract.methods.owner().call();
-    console.log(owner);
-
-    this.lotteryContract.methods.betAndDistribute('0xcd').send({from:this.account, value:5000000000000000, gas:300000})
   }
 
   getPot = async () => {
-    
     let pot = await this.lotteryContract.methods.getPot().call();
     let potString = this.web3.utils.fromWei(pot.toString(), 'ether');
     this.setState({pot:potString})
+  }
 
+  makeFinalRecords = () => {
+
+    let f = 0, w = 0;
+    const records = [...this.state.betRecords];
+    for(let i=0;i<this.state.betRecords.length;i+=1) {
+      if(this.state.winRecords.length > 0 && this.state.betRecords[i].index === this.state.winRecords[w].index){
+        records[i].win = 'WIN'
+        records[i].answer = records[i].challenges;
+        records[i].pot = this.web3.utils.fromWei(this.state.winRecords[w].amount, 'ether');
+        if(this.state.winRecords.length - 1 > w) w++;
+
+      } else if(this.state.failRecords.length > 0 && this.state.betRecords[i].index === this.state.failRecords[f].index){  
+        records[i].win = 'FAIL'
+        records[i].answer = this.state.failRecords[f].answer;
+        records[i].pot = 0;
+        if(this.state.failRecords.length - 1 > f) f++;
+      } else {
+        records[i].answer = 'Not Revealed';
+      }
+    }
+
+    this.setState({finalRecords:records})
   }
 
   getBetEvents = async () => {
     const records = [];
     let events = await this.lotteryContract.getPastEvents('BET', {fromBlock:0, toBlock:'latest'});
-    console.log(events);
+    
+    for(let i=0;i<events.length;i+=1){
+      const record = {}
+      record.index = parseInt(events[i].returnValues.index, 10).toString();
+      // record.bettor = events[i].returnValues.bettor.slice(0,4) + '...' + events[i].returnValues.bettor.slice(40,42); // 주소가 너무 길면 사용
+      record.bettor = events[i].returnValues.bettor; // 주소 그대로 사용
+      record.betBlockNumber = events[i].blockNumber;
+      record.targetBlockNumber = events[i].returnValues.answerBlockNumber.toString();
+      record.challenges = events[i].returnValues.challenges;
+      record.win = 'Not Revealed';
+      record.answer = '0x00';
+      records.unshift(record);
+    }
+
+    this.setState({betRecords:records})
   }
 
-  bet = async() => {
+  getFailEvents = async () => {
+    const records = [];
+    let events = await this.lotteryContract.getPastEvents('FAIL', {fromBlock:0, toBlock:'latest'});
+    
+    for(let i=0;i<events.length;i+=1){
+      const record = {}
+      record.index = parseInt(events[i].returnValues.index, 10).toString();
+      record.answer = events[i].returnValues.answer;
+      records.unshift(record);
+    }
+    console.log(records);
+    this.setState({failRecords:records})
+  }
+
+  getWinEvents = async () => {
+    const records = [];
+    let events = await this.lotteryContract.getPastEvents('WIN', {fromBlock:0, toBlock:'latest'});
+    
+    for(let i=0;i<events.length;i+=1){
+      const record = {}
+      record.index = parseInt(events[i].returnValues.index, 10).toString();
+      record.amount = parseInt(events[i].returnValues.amount, 10).toString();
+      records.unshift(record);
+    }
+    this.setState({winRecords:records})
+  }
+
+  bet = async () => {
     // nonce
+
+    let challenges = '0x' + this.state.challenges[0].toLowerCase() + this.state.challenges[1].toLowerCase();
     let nonce = await this.web3.eth.getTransactionCount(this.account);
-    this.lotteryContract.methods.betAndDistribute('0xcd').send({from: this.account, value: 5000000000000000, gas:300000, nonce:nonce})
+    this.lotteryContract.methods.betAndDistribute(challenges).send({from:this.account, value:5000000000000000, gas:300000, nonce:nonce})
+    .on('transactionHash', (hash) =>{
+      console.log(hash)
+    })
+
   }
 
   // Pot money
-
-  // bet 글자 선택 UI(버튼 형식)
+  // bet 글자 선택
   // Bet button
-
   // History table
   // index address challenge answer pot status answerBlockNumber
 
+  onClickCard = (_Character) => {
+    this.setState({
+      challenges : [this.state.challenges[1], _Character]
+    })
+  }
   getCard = (_Character, _cardStyle) => {
     let _card = '';
-
     if(_Character === 'A'){
       _card = '🂡'
     }
@@ -116,7 +187,7 @@ class App extends Component {
     if(_Character === 'C'){
       _card = '🃁'
     }
-    if(_Character === 'D'){
+    if(_Character === '0'){
       _card = '🃑'
     }
 
@@ -130,10 +201,10 @@ class App extends Component {
       </button>
     )
   }
-
   render() {
     return (
       <div className="App">
+        
         {/* Header - Pot, Betting characters */}
         <div className="container">
           <div className="jumbotron">
@@ -144,24 +215,21 @@ class App extends Component {
             <p>{this.state.challenges[0]} {this.state.challenges[1]}</p>
           </div>
         </div>
+
         {/* Card section */}
         <div className="container">
           <div className="card-group">
             {this.getCard('A', 'card bg-primary')}
             {this.getCard('B', 'card bg-warning')}
             {this.getCard('C', 'card bg-danger')}
-            {this.getCard('D', 'card bg-success')}
+            {this.getCard('0', 'card bg-success')}
           </div>
         </div>
-
         <br></br>
-
         <div className="container">
           <button className="btn btn-danger btn-lg" onClick={this.bet}>BET!</button>
         </div>
-
         <br></br>
-
         <div className="container">
           <table className="table table-dark table-striped">
             <thead>
@@ -195,8 +263,8 @@ class App extends Component {
           </table>
         </div>
       </div>
-    )
+    );
   }
 }
-
+// index address challenge answer pot status answerBlockNumber
 export default App;
